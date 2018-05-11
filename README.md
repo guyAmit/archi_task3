@@ -4,7 +4,8 @@
 homework 3 in the caspl course at ben Gurion university. in this project
 we will build two virtual machines:
   1) asm-nasm virtual machine for running sic code from stream
-  2) sic virtual machine for running sic
+  2) sic virtual machine for running sic codes
+
 the purpose of this project is to build a asm-nasm virtual machine for sic that
 will run a series of sic-based virtual machines, s.t. the last virtual machine will run a sic
 that calculate the Fibonacci series.
