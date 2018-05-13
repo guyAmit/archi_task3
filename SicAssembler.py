@@ -1,21 +1,22 @@
 import re
 
 offset = 0
-labelRegex = '[a-z]+: [0-9]+'
-
+labelRegex = '[a-z]+: [0-9]+\n'
+isNumberRegex = '[0-9]+\n*'
 labelP = re.compile(labelRegex)
+isNumberP = re.compile(isNumberRegex)
+
 addressesMap = {}
 
-file = open("sic.txt", "r")
+file = open('sic.txt', 'r')
 
 # read all labels:
 for l in file.readlines():
-    lableMatcher = labelP.fullmatch(str(l))
+    lableMatcher = labelP.fullmatch(l)
     if lableMatcher is not None:
-        print(l)
-        offset += 1
         lablelAndNumber = l.split(' ')
-        addressesMap[lablelAndNumber[0][:-1]] = lablelAndNumber[1]
+        addressesMap[(lablelAndNumber[0])[:-1]] = str(offset)
+        offset += 1
     else:
         offset += 3
 
@@ -27,21 +28,22 @@ file = open("sic.txt", "r")
 
 
 
-# final = ""
-# lines = file.readlines()
-# for i in lines:
-#     thisline = i.split(" ")
-#     for j in thisline:
-#         try:
-#             int(j)
-#             final += j + " "
-#         except ValueError:
-#             if j != "sbn":
-#                 final += addressesMap[j] + " "
-#
-# outfile = open("sicTranslation.sic", "w+")
-#
-# outfile.write(final)
+final = ""
+lines = file.readlines()
+for i in lines:
+    thisline = i.split(" ")
+    for j in thisline:
+        j = j.replace('\n', '')
+        numberMatcher = isNumberP.fullmatch(j)
+        if numberMatcher is not None:
+            final += j.replace('\n', '') + " "
+        else:
+            if j != "sbn" and (not j.__contains__(':')) :
+                final+= addressesMap[j] + " "
 
-# outfile.close()
+outfile = open("sicTranslation.sic", "w+")
+
+outfile.write(final[:-1])
+
+outfile.close()
 file.close()
