@@ -26,6 +26,7 @@ file.close()
 file = open("sic.txt", "r")
 
 
+
 # final = ""
 # lines = file.readlines()
 # for i in lines:
