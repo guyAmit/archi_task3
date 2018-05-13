@@ -1,11 +1,23 @@
 import re
-labelRegex = '[a-z]+: [0-9]+'
-labelP = re.compile(labelRegex)
-lableMatcher = labelP.fullmatch('a: 1')
-print(lableMatcher)
-lableMatcher = labelP.fullmatch('c: 1')
-print(lableMatcher)
-lableMatcher = labelP.fullmatch('b: 1')
-print(lableMatcher)
+sbnRegex = 'sbn [\w+0-9]+ [\w+0-9]+[ ]*[\w+0-9]*\n*'
+specialSbnFormRegex = '[\w]+[+][1-2]+\n*'
+varRegex = '[a-z]+: [0-9]+\n*'
+
+varP = re.compile(varRegex)
+labelP = re.compile(sbnRegex)
+specialSbnFormP = re.compile(specialSbnFormRegex)
+
+sbnMatcher = labelP.match('sbn guy+2 guy+77 88')
+specialSbnFormMatcher = specialSbnFormP.match('guy+1')
+varMatcher = varP.match('guy: 1')
+print(sbnMatcher.group(0).replace('\n', ''))
+print(specialSbnFormMatcher.group(0).replace('\n', ''))
+print(varMatcher.group(0).replace('\n', ''))
+
+
+# lableMatcher = labelP.fullmatch('c:\n')
+# print(lableMatcher)
+# lableMatcher = labelP.fullmatch('bdffd:\n')
+# print(lableMatcher)
 
 

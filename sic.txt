@@ -1,4 +1,41 @@
-sbn 2 23 57
-a: 11
-b: 22
-c: 33
+start:
+sbn a a
+sbn b b
+sbn c c
+sbn tmp tmp  ; a,b,c,tmp = 0
+
+while_cond:
+sbn tmp i
+sbn a tmp    ; a <- M[i]
+sbn tmp tmp
+sbn i inc
+sbn tmp i
+sbn b tmp    ; b <- M[i+1]
+sbn tmp tmp
+sbn i inc
+sbn tmp i
+sbn c tmp    ; c <- M[i+2]
+sbn tmp tmp
+sbn i inc    ; i+=3
+
+sbn tmp tmp       ; if at least one is not zero go to if_cond
+sbn tmp a if_cond ; else quit
+sbn tmp b if_cond
+sbn tmp c if_cond
+quit:
+sbn 0 0 0
+if_cond:
+sbn i dec3
+sbn i i+1 i+2
+
+sbn tmp tmp
+sbn tmp dec start ; loop back to start
+
+a: 0
+b: 0
+c: 0
+i: 0
+tmp: 0
+inc: -1
+dec: 1
+dec3: 3
