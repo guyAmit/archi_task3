@@ -1,29 +1,39 @@
 import re
 
 offset = 0
-labelRegex = "[\w*:]"
-defineWordRegex = "[.define-word (1-9)+ ]"
+labelRegex = '[a-z]+: [0-9]+'
 
-sbnRegex = "[SBN \w+ \w+ \w+]"
 labelP = re.compile(labelRegex)
-sbnP = re.compile(sbnRegex)
-defineWordP  =  re.compile(defineWordRegex)
 addressesMap = {}
 
 file = open("sic.txt", "r")
-outfile = open("sicTranslation.sic", "w+")
 
-
-#read all labels:
-for l in file.Readlines():
-    lableMatcher = labelP.match(l)
-    defineWordMather = defineWordP.match(l)
-    if lableMatcher.groups().count() != 0:
+# read all labels:
+for l in file.readlines():
+    lableMatcher = labelP.fullmatch(l)
+    if lableMatcher.groups() is not None:
         offset += 1
-        addressesMap[l[0:-1]] = offset
-    if defineWordMather.groups().count()!=0:
-        addressesMap[str(offset)]  =  defineWordMather.groups(0)
+        lablelAndNumber = l.split(' ')
+        addressesMap[lablelAndNumber[0][:-1]] = lablelAndNumber[1]
     else:
         offset += 3
 
-#translate into a new file
+# translate into a new file
+# Read in the file
+final = ""
+lines = file.readlines()
+for i in lines:
+    thisline = i.split(" ")
+    for j in thisline:
+        try:
+            int(s)
+            final += s + " "
+        except ValueError:
+            final += addressesMap[j] + " "
+
+outfile = open("sicTranslation.sic", "w+")
+
+outfile.write(final)
+
+outfile.close()
+file.close()
