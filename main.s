@@ -39,6 +39,8 @@ main:
     mov rsi, input
     mov rax,0
     call scanf
+    cmp rax, -1  ;; check for end of file
+    je end_input_loop
 
     mov r15, qword[input]
     mov [r13+r14], r15
@@ -47,6 +49,8 @@ main:
     add r14,8
     cmp qword[size], r14
     jne input_loop
+    jmp end_input_loop
+
   end_input_loop:
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
