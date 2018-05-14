@@ -1,7 +1,7 @@
 import re
 
 offset = 0
-varRegex = '[a-z_]+: [0-9]+\n*'
+varRegex = '[a-z_0-9]+: [-]*[0-9]+\n*'
 isNumberRegex = '[0-9]+\n*'
 labelRegex = '[a-z_]+:\n*'
 sbnRegex = 'sbn [\w+_0-9]+ [\w+_0-9]+[ ]*[\w+_0-9]*\n*'
@@ -51,7 +51,7 @@ for i in lines:
         try:
             splittingIndex=i.index(';')
         except ValueError:
-            splittingIndex=len(i)-1
+            splittingIndex=len(i)
         thisline = i[0:splittingIndex].replace('\n', '').split(" ")
         sbnMatcher = sbnP.match(i)
         lableMatcher = labelP.match(i)
