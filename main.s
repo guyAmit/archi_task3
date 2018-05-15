@@ -13,9 +13,8 @@ section .bss
   input: resq 1
 
 section .data
-	input_string: db  "%d",10,0
+	input_string: db  "%d",0
   out_string: db "%d ",0
-  out_string1: db "%d %d %d",10,0
   newline: db 10
 section .text
 main:
@@ -39,9 +38,12 @@ main:
     mov rsi, input
     mov rax,0
     call scanf
-    cmp rax, -1  ;; check for end of file
-    je end_input_loop
 
+    cmp rax, 0xffffffff
+    je end_input_loop
+    jmp continue
+
+    continue:
     mov r15, qword[input]
     mov [r13+r14], r15
     xor r15,r15
