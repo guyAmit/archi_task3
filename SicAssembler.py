@@ -1,4 +1,6 @@
 import re
+import os
+from os import write
 
 offset = 0
 varRegex = '[a-z_0-9]+: [-]*[0-9]+\n*'
@@ -38,21 +40,31 @@ print(addressesMap)
 # translate into a new file
 # Read in the file
 file.close()
+
+
+#remove comments from code
 file = open("sic.txt", "r")
+temp_file = open("temp.txt", "w")
+for line in file.readlines():
+    splittingIndex = 0
+    try:
+        splittingIndex = line.index(';')
+    except ValueError:
+        splittingIndex = len(line)
+    thisline = line[0:splittingIndex]
+    temp_file.write(thisline)
+temp_file.close()
 
 
 
+#
+file = open("temp.txt", "r")
 final = ""
 lines = file.readlines()
 offset=0
 for i in lines:
-    if i != '' :
-        splittingIndex=0
-        try:
-            splittingIndex=i.index(';')
-        except ValueError:
-            splittingIndex=len(i)
-        thisline = i[0:splittingIndex].replace('\n', '').split(" ")
+    if i != '':
+        thisline = i.replace('\n', '').split(" ")
         sbnMatcher = sbnP.match(i)
         lableMatcher = labelP.match(i)
         varMatcher = varP.match(i)
@@ -85,3 +97,4 @@ outfile.write(final[:-1])
 
 outfile.close()
 file.close()
+os.remove("temp.txt")

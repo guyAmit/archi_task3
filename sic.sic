@@ -42,4 +42,4 @@ tmp: 0
 inc: -1
 dec: 1
 dec3: 3
-i: *num of lines*
+i: -3478
