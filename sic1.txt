@@ -1,0 +1,93 @@
+start:
+sbn a a
+sbn b b
+sbn c c
+sbn tmp tmp  ; a,b,c,tmp = 0
+
+while_cond:
+  sbn tmp i
+  sbn a tmp    ; a <- *M[i]
+  sbn tmp tmp
+  sbn i inc
+  sbn tmp i
+  sbn b tmp    ; b <- *M[i+1]
+  sbn tmp tmp
+  sbn i inc
+  sbn tmp i
+  sbn c tmp    ; c <- *M[i+2]
+  sbn tmp tmp
+  sbn i inc    ; i+=3
+
+  sbn check1+1 check1+1
+  sbn check2+1 check2+1
+  sbn check3+1 check3+1
+  sbn tmp tmp
+  sbn tmp a
+  sbn check1+1 tmp
+  sbn tmp tmp
+  sbn tmp b
+  sbn check2+1 tmp
+  sbn tmp tmp
+  sbn tmp c
+  sbn check3+1 tmp
+  sbn aa aa
+  sbn bb bb
+  sbn cc cc
+
+  sbn tmp tmp
+  check1:
+  sbn tmp 0
+  sbn aa tmp    ; aa <- M[i]
+  sbn tmp tmp
+  check2:
+  sbn tmp 0
+  sbn bb tmp     ; bb <- M[i+1]
+  sbn tmp tmp
+  check3:
+  sbn tmp 0
+  sbn cc tmp     ; cc <- M[i+2]
+  sbn tmp tmp
+  sbn tmp aa if_cond  ; if(0 - M[i] < 0) jmp to if_cond
+  sbn tmp bb if_cond
+  sbn tmp cc if_cond
+  quit:
+    sbn 0 0 0
+  if_cond:
+    sbn tmp tmp
+    sbn tmp offset
+    sbn aa tmp      ; aa <- M[i]+offset
+    sbn bb tmp      ; bb <- M[i+1]+offset
+    sbn cc tmp      ; cc <- M[i+2]+offset
+
+    sbn tmp tmp
+    sbn foo foo
+    sbn foo+1 foo+1
+    sbn tmp aa
+    sbn foo tmp
+    sbn tmp tmp
+    sbn tmp bb
+    sbn foo+1 tmp
+    foo:
+    sbn 0 0 if_true                 ; if ((M[M[i]] -= M[M[i + 1]]) < 0)
+    sbn tmp tmp
+    sbn tmp dec start  ; loop back to start
+    if_true:
+      sbn tmp tmp
+      sbn tmp cc
+      sbn i i
+      sbn i tmp
+      sbn tmp tmp
+      sbn tmp dec start ; loop back to start
+
+a: 0
+b: 0
+c: 0
+aa: 0
+bb: 0
+cc: 0
+tmp: 0
+inc: -1
+dec: 1
+offset: 212
+i: 212
+
