@@ -25,7 +25,7 @@ for running the sic virtual machine
 ## Currently Supporting
 
 * **the asm-nsam virtual machine**
-* **the sic-based virtual machine is Currently in planning**
+* **the sic**
 
 ## Prerequisites
 
